@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a1429">
+<title>Laboratorio de cambios de estado · Física y Química 2.º ESO</title>
+<style>
+:root {color-scheme:dark;--bg:#0a1224;--panel:#14213b;--border:#314562;--muted:#a7bcd5;--text:#f4faff;--blue:#31bbf9;--cyan:#86e7ff;--amber:#f3ba65;}
+*{box-sizing:border-box}html,body{min-height:100%;margin:0}body{background:var(--bg);color:var(--text);font-family:Segoe UI,Inter,Arial,sans-serif;padding:16px clamp(12px,2vw,28px) 24px}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #ffd78b;outline-offset:3px}input[type=range]{cursor:pointer;accent-color:#23c2f8}.shell{max-width:1580px;margin:0 auto}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.13em;color:#80d9ff;text-transform:uppercase}.top h1{margin:4px 0 0;font-size:clamp(25px,2.25vw,36px);font-weight:850;line-height:1.16}.topBtns{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.chip{padding:9px 13px;border:1px solid #426381;background:#172943;border-radius:50px;color:#d9f3ff;font-weight:760;font-size:13px;white-space:nowrap}.chip:hover{background:#254666}.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:15px}.left{min-width:0}.topline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:11px}.state{position:relative;overflow:hidden;border-radius:12px;padding:11px 12px;background:#162743;border:1px solid #304766;min-height:65px}.state .name{font-weight:880;font-size:clamp(16px,1.25vw,20px);margin-bottom:3px}.state .pct{font-weight:850;font-size:13px;color:#a5dafa}.state .bar{height:3px;position:absolute;bottom:0;left:0;background:#4dc6ff;transition:width .12s}.state.solid .bar{background:#b9e3f4}.state.liquid .bar{background:#2dbdff}.state.gas .bar{background:#fbc47a}.sceneBox{position:relative;border-radius:18px;overflow:hidden;background:#192442;border:1px solid #355171;box-shadow:0 14px 45px #0004}.sceneBox canvas{display:block;width:100%;aspect-ratio:950 / 520;height:auto}.stageStatus{position:absolute;top:10px;left:50%;transform:translateX(-50%);max-width:94%;width:max-content;text-align:center;padding:8px 14px;border:1px solid #436886;border-radius:10px;background:#071a30eb;color:#f0faff;font-size:clamp(12px,1.1vw,17px);font-weight:770;pointer-events:none;z-index:1}.stageStatus strong{color:#9fe9ff}.stageHint{position:absolute;bottom:13px;left:16px;background:#07172dd3;border:1px solid #2f5875;padding:7px 10px;border-radius:9px;font-size:12px;color:#bed9ee;pointer-events:none}.plotBox{background:#121f38;border:1px solid #304663;border-radius:15px;padding:12px 15px 9px;margin-top:12px}.plotTop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:5px}.plotTop h2{font-size:17px;margin:0}.plotTop span{font-size:12px;color:#a0b9d3}.plotBox canvas{display:block;width:100%;aspect-ratio:950 / 220;height:auto}.plotToggle{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:4px 3px;border:0;background:transparent;color:#e2f3ff;font-weight:800;font-size:15px}.plotToggle:hover{color:#75d6ff}.plotArrow{font-size:19px;color:#80d5f8;line-height:1;width:21px;text-align:center}.plotContent[hidden]{display:none}.plotContent{position:fixed;z-index:40;right:18px;bottom:18px;width:min(750px,calc(100vw - 36px));max-height:min(55vh,390px);overflow:auto;padding:13px 15px 11px;background:#111f36f5;border:1px solid #6083a6;border-radius:15px;box-shadow:0 17px 55px #000b;backdrop-filter:blur(8px)}.plotContent[hidden]{display:none}.plotContent canvas{aspect-ratio:950 / 220}.plotTop{cursor:grab;user-select:none;touch-action:none;align-items:center}.plotTop:active{cursor:grabbing}.plotTop h2{font-size:16px}.plotClose{border:1px solid #537592;border-radius:8px;background:#29445e;color:#f2faff;font-size:20px;font-weight:800;width:32px;height:30px;flex:none;line-height:1}.plotHint{font-size:11px;color:#9cb9ce;margin-top:4px}.evapToggle{display:block;width:100%;padding:12px 10px;margin-top:9px;text-align:center;border:1px solid #5d819d;background:#223b55;color:#e5f5ff;border-radius:11px;font-size:15px;font-weight:850}.evapToggle:hover{background:#305473}.evapToggle.isActive{background:#15546c;border-color:#61d8f6;color:#e8fcff}.panel{align-self:start;background:#14223b;border:1px solid #324963;border-radius:18px;padding:16px;box-shadow:0 15px 45px #0003}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.panel h2{font-size:21px;margin:0}.reset{height:39px;min-width:39px;border-radius:10px;font-size:24px;line-height:1;color:#eafaff;background:#29445d;border:1px solid #56738c}.reset:hover{background:#335a77}.subtitle{color:#a7bdd4;font-size:13px;line-height:1.45;margin:8px 0 15px}.reading{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px}.tile{border:1px solid #37516c;background:#1a304a;padding:12px 9px;border-radius:11px}.tile small{display:block;letter-spacing:.08em;font-size:10px;font-weight:850;color:#9bbdd8;margin-bottom:6px}.tile strong{font-size:25px;font-weight:900;color:#f4faff;font-variant-numeric:tabular-nums}.tile .subval{color:#9be1ff;font-size:13px;font-weight:850}.group{border-top:1px solid #30425a;padding:15px 0}.labelRow{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;font-weight:790;margin-bottom:12px}.number{color:#86deff;font-weight:850}.slider{width:100%;height:8px}.ticks{display:flex;justify-content:space-between;font-size:12px;color:#99b3cc;margin-top:4px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.action{padding:12px 8px;border:1px solid #52718d;background:#223e59;color:#f1faff;border-radius:11px;font-weight:830;font-size:15px}.action:hover{background:#30536e}.action.active.heat{border-color:#ffbc76;background:#7e4520;color:#fff5e8}.action.active.cool{border-color:#80d4ff;background:#14538b}.action.full{grid-column:1/-1}.action.stop{background:#214866}.heatIcon{font-size:19px;vertical-align:middle}.lidBtn{display:block;width:100%;padding:12px 10px;text-align:center;border:1px solid #d09a60;background:#46372c;color:#fff1dc;border-radius:11px;font-size:15px;font-weight:850}.lidBtn:hover{background:#60432e}.lidBtn.isOpen{background:#24577b;border-color:#75c8f2;color:#eefaff}.evapStat{margin-top:10px;border:1px solid #355a77;border-radius:10px;padding:9px 11px;background:#102e47;color:#c6e5f9;font-size:12px;line-height:1.45}.evapStat strong{color:#f6fbff;font-size:17px}.option{display:flex;gap:10px;align-items:center;cursor:pointer;font-size:14px;font-weight:780;margin:0 0 7px}.option input{height:20px;width:20px;accent-color:#27bdf4}.note{background:#0e2b44;border:1px solid #365d7b;border-radius:11px;padding:12px 11px;color:#c7deef;font-size:13px;line-height:1.5}.note strong{display:block;color:#f7fbff;font-size:14px;margin-bottom:3px}.phaseList{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px}.phaseList button{font-size:10px;font-weight:800;padding:7px 2px;border:1px solid #3a5672;background:#1a304b;color:#c8e4f5;border-radius:7px}.phaseList button:hover{background:#255b80}.foot{font-size:12px;color:#819bb5;line-height:1.5;text-align:center;margin:13px auto;max-width:1350px}@media(max-width:1100px){.layout{grid-template-columns:1fr}.panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px}.panelhead,.subtitle,.reading,.note,.phaseList{grid-column:1/-1}}@media(max-width:700px){body{padding:10px}.top{align-items:flex-start;flex-direction:column}.topline{gap:5px}.state{min-height:52px;padding:8px}.state .name{font-size:14px}.state .pct{font-size:11px}.stageStatus{top:5px;padding:5px 6px;font-size:10px}.sceneBox canvas{aspect-ratio:950/520}.stageHint{display:none}.panel{display:block}.plotTop span{font-size:10px}.tile strong{font-size:21px}}
+
+/* V12: lectura vertical de estados, escena elevada y curva bajo la animación. */
+.visualLayout{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:stretch;gap:12px}
+.stateColumn{display:flex;flex-direction:column;gap:9px;min-height:0}
+.stateColumn .state{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 5px;isolation:isolate}
+.stateColumn .state .name,.stateColumn .state .pct{position:relative;z-index:1;text-shadow:0 1px 5px #07182e}
+.stateColumn .state .name{font-size:clamp(14px,1.2vw,19px);white-space:nowrap;margin-bottom:7px}
+.stateColumn .state .pct{font-size:clamp(15px,1.3vw,21px);font-variant-numeric:tabular-nums;color:#f4faff}
+.stateColumn .state .bar{z-index:0;left:0;bottom:0;width:100%;height:0%;opacity:.38;transition:height .12s;pointer-events:none}
+.sceneArea{min-width:0;display:flex;flex-direction:column;gap:9px}
+.sceneArea .sceneBox{flex:none}
+.sceneArea .stageStatus{position:static;transform:none;width:100%;max-width:none;min-height:45px;display:flex;align-items:center;justify-content:center;line-height:1.25;padding:9px 12px;font-size:clamp(12px,1vw,16px)}
+.sceneBox canvas{max-height:min(55vh,445px);width:auto;max-width:100%;height:auto;margin:0 auto}
+.sceneBox .stageHint{bottom:8px}
+.plotBox{margin-top:10px;padding:7px 12px;background:#121f38}
+.plotToggle{padding:5px 2px;font-size:14px}
+.plotContent,.plotContent[hidden]{position:static;z-index:auto;right:auto;left:auto;bottom:auto;top:auto;width:100%;max-height:none;overflow:visible;box-shadow:none;backdrop-filter:none;border:none;border-radius:0;background:transparent;padding:7px 0 1px}
+.plotContent[hidden]{display:none}
+.plotContent canvas{width:100%;height:auto;aspect-ratio:950 / 234;display:block}
+@media(max-width:1100px){.visualLayout{grid-template-columns:110px minmax(0,1fr)}}
+@media(max-width:700px){.visualLayout{grid-template-columns:78px minmax(0,1fr);gap:6px}.stateColumn{gap:5px}.stateColumn .state .name{font-size:11px}.stateColumn .state .pct{font-size:13px}.sceneArea .stageStatus{font-size:11px;padding:7px;min-height:38px}.sceneBox canvas{max-height:53vh}}
+
+/* V13: recipiente más protagonista y curva flotante, compacta y arrastrable. */
+.sceneBox canvas{width:100%;max-width:100%;height:auto;max-height:min(67vh,540px);object-fit:contain}
+.plotBox{margin-top:7px;padding:5px 10px}
+.plotToggle{padding:4px 2px}
+.plotContent{position:fixed!important;z-index:50!important;left:auto;top:auto;right:20px;bottom:20px;width:min(672px,calc(100vw - 24px))!important;max-height:min(63vh,420px)!important;overflow:auto!important;padding:12px 13px 9px!important;background:#111f36f5!important;border:1px solid #6083a6!important;border-radius:14px!important;box-shadow:0 17px 55px #000b!important;backdrop-filter:blur(8px)!important}
+.plotContent[hidden]{display:none!important}
+.plotContent canvas{width:100%;height:auto;aspect-ratio:950 / 234;display:block}
+.plotTop{cursor:grab;user-select:none;touch-action:none;align-items:center;gap:8px;margin-bottom:5px}
+.plotTop:active{cursor:grabbing}
+.plotTop h2{font-size:14px;margin:0}
+.plotTop span{font-size:11px}
+.plotClose{border:1px solid #537592;border-radius:8px;background:#29445e;color:#f2faff;font-size:20px;font-weight:800;width:30px;height:28px;flex:none;line-height:1}
+@media(max-width:700px){.plotContent{right:8px;bottom:8px;width:calc(100vw - 16px)!important}.plotTop span{display:none}}
+
+/* V15: ventana flotante redimensionable sin perder legibilidad. */
+.plotContent{
+  display:flex!important;flex-direction:column;box-sizing:border-box;
+  width:min(672px,calc(100vw - 24px))!important;
+  height:min(340px,calc(100vh - 24px))!important;
+  min-width:min(370px,calc(100vw - 24px));min-height:205px;
+  max-width:calc(100vw - 12px)!important;max-height:calc(100vh - 12px)!important;
+  overflow:hidden!important;resize:none;
+}
+.plotContent[hidden]{display:none!important}
+.plotContent canvas{flex:1 1 auto;min-height:0!important;width:100%!important;height:100%!important;aspect-ratio:auto!important;display:block}
+.plotTop{flex:0 0 auto;min-height:32px}
+.plotResize{position:absolute;right:0;bottom:0;width:31px;height:31px;cursor:nwse-resize;touch-action:none;z-index:3;border:0;background:linear-gradient(135deg,transparent 49%,#416b91 49%,#416b91 53%,transparent 53%,transparent 65%,#8dcff0 65%,#8dcff0 70%,transparent 70%,transparent 80%,#8dcff0 80%,#8dcff0 84%,transparent 84%);border-radius:0 0 12px 0}
+.plotResize:focus-visible{outline:2px solid #ffe28c;outline-offset:-4px}
+
+/* V16 · Controles compactos y visibles en pantalla completa. */
+.v16LidRow{display:grid;grid-template-columns:1fr 1fr;gap:7px;align-items:stretch}
+.v16LidRow .lidBtn,.v16LidRow .evapToggle{width:100%;min-width:0;min-height:41px;margin:0;padding:8px 5px;border-radius:9px;font-size:12px;line-height:1.18;font-weight:830}
+.panel{padding:12px 13px}
+.panel .subtitle{margin:5px 0 9px;line-height:1.3}
+.panel .reading{margin-bottom:7px;gap:6px}
+.panel .tile{padding:8px 8px}
+.panel .tile small{margin-bottom:3px}
+.panel .tile strong{font-size:22px}
+.panel .group{padding:9px 0}
+.panel .labelRow{margin-bottom:6px;font-size:13px}
+.panel .action{padding:8px 6px;font-size:13px}
+.panel .actions{gap:6px}
+.panel .note{padding:8px 9px;font-size:12px;line-height:1.35}
+.panel .note strong{margin-bottom:2px;font-size:12px}
+.panel .phaseList{margin-top:7px}
+.panel .phaseList button{padding:6px 1px}
+.panel .ticks{font-size:11px}
+/* El modo pantalla completa elimina márgenes superfluos y prioriza
+   los controles antes que el pie explicativo. */
+:fullscreen body{padding:8px 12px 6px;overflow:hidden}
+:fullscreen .top{margin-bottom:7px}
+:fullscreen .top h1{font-size:clamp(22px,1.7vw,29px)}
+:fullscreen .eyebrow{font-size:10px}
+:fullscreen .layout{gap:10px;grid-template-columns:minmax(0,1fr) 310px}
+:fullscreen .panel{padding:9px 12px;max-height:calc(100vh - 76px);overflow-y:auto;scrollbar-width:thin}
+:fullscreen .panel .subtitle{margin:3px 0 6px;font-size:12px}
+:fullscreen .panel .group{padding:7px 0}
+:fullscreen .panel .labelRow{margin-bottom:4px}
+:fullscreen .panel .action{padding:6px 4px}
+:fullscreen .panel .note{padding:6px 8px}
+:fullscreen .panel .phaseList{margin-top:5px}
+:fullscreen .panel .phaseList button{padding:5px 1px}
+:fullscreen .foot{display:none}
+:fullscreen .sceneBox canvas{max-height:min(73vh,630px)}
+:fullscreen .sceneArea .stageStatus{min-height:35px;padding:6px 9px}
+@media(max-height:760px){
+ .panel .subtitle{display:none}
+ .panel .group{padding:6px 0}
+ .panel .tile{padding:6px}
+ .panel .tile strong{font-size:19px}
+ .panel .note{display:none}
+ .panel .phaseList button{padding:4px 1px}
+}
+
+/* V18 — Selector de sustancias y tabla flotante. */
+.substanceRow{display:grid;grid-template-columns:minmax(0,1fr) 91px;gap:7px;align-items:stretch;margin:0 0 9px}
+.substanceSelect{min-width:0;width:100%;padding:8px 6px;border-radius:9px;background:#203b55;color:#f1faff;border:1px solid #5685a3;font-size:13px;font-weight:800}
+.substanceTableBtn{font-size:12px;font-weight:800;border-radius:9px;border:1px solid #5986a4;background:#244660;color:#e9f7ff;padding:6px}
+.substanceTableBtn:hover{background:#326081}
+.substanceMeta{font-size:11px;color:#a9c7dd;text-align:center;margin:-3px 0 6px}
+.tableFloat[hidden]{display:none!important}
+.tableFloat{position:fixed;left:clamp(8px,20vw,360px);top:10vh;width:min(780px,calc(100vw - 20px));height:min(490px,calc(100vh - 24px));min-width:min(410px,calc(100vw - 20px));min-height:220px;max-width:calc(100vw - 8px);max-height:calc(100vh - 8px);display:flex;flex-direction:column;z-index:75;background:#0e2037f8;border:1px solid #6c94b2;border-radius:14px;box-shadow:0 17px 55px #000b;overflow:hidden}
+.tableFloatHead{flex:none;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1e3552;cursor:grab;touch-action:none;user-select:none}
+.tableFloatHead:active{cursor:grabbing}
+.tableFloatHead strong{flex:1;font-size:16px}
+.tableFloatHead button{background:#29445e;color:#f7fcff;border:1px solid #6082a0;border-radius:7px;font-size:19px;width:32px;height:29px}
+.tableFloatContent{min-height:0;flex:1;overflow:auto;padding:9px 13px 18px}
+.tableFloatContent table{width:100%;border-collapse:collapse;line-height:1.55;font-size:clamp(13px,1.2vw,17px)}
+.tableFloatContent th,.tableFloatContent td{padding:7px 9px;text-align:left;border-bottom:1px solid #34516d}
+.tableFloatContent td:nth-child(2),.tableFloatContent td:nth-child(3),.tableFloatContent th:nth-child(2),.tableFloatContent th:nth-child(3){text-align:right;font-variant-numeric:tabular-nums}
+.tableFloatContent thead{position:sticky;top:0;background:#193650}
+.tableFloatContent tr.selected{background:#2b5672}
+.tableSwatch{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:8px;vertical-align:-1px;border:1px solid #ffffff66}
+.tableFoot{font-size:11px;color:#a8bfd3;padding-top:8px}
+.tableResize{position:absolute;right:1px;bottom:1px;width:22px;height:22px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 48%,#a9d9f7 49%,#a9d9f7 53%,transparent 54%,transparent 65%,#a9d9f7 66%,#a9d9f7 70%,transparent 71%);touch-action:none}
+@media(max-width:700px){.substanceRow{grid-template-columns:minmax(0,1fr) 82px}.substanceSelect{font-size:12px}.tableFloat{left:8px;top:8px}}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top">
+  <div><div class="eyebrow">Física y Química · 2.º ESO</div><h1>Laboratorio de cambios de estado</h1></div>
+  <div class="topBtns"><button type="button" class="chip" id="fullscreen">⛶ Pantalla completa</button></div>
+</header>
+<div class="layout">
+<main class="left">
+  <div class="visualLayout">
+    <div class="stateColumn" aria-label="Porcentaje de cada estado" aria-live="polite">
+      <div class="state gas"><div class="name">✧ Gas</div><div class="pct" id="gasPct">0 %</div><div class="bar" id="gasBar"></div></div>
+      <div class="state liquid"><div class="name">≋ Líquido</div><div class="pct" id="liquidPct">0 %</div><div class="bar" id="liquidBar"></div></div>
+      <div class="state solid"><div class="name">▦ Sólido</div><div class="pct" id="solidPct">100 %</div><div class="bar" id="solidBar" style="height:100%"></div></div>
+    </div>
+    <div class="sceneArea">
+      <div class="sceneBox">
+        <canvas id="stage" width="950" height="520" aria-label="Recipiente con partículas que se funden, vaporizan, condensan o solidifican"></canvas>
+      </div>
+      <div class="stageStatus" id="stageStatus" aria-live="polite"><strong>Sólido</strong> · Las partículas vibran en posiciones fijas.</div>
+    </div>
+  </div>
+  <section class="plotBox" aria-label="Gráfica de calentamiento y enfriamiento">
+    <button type="button" class="plotToggle" id="plotToggle" aria-controls="plotContent" aria-expanded="false">
+      <span class="plotArrow" id="plotArrow" aria-hidden="true">▸</span><span id="plotToggleText">Mostrar curva de calentamiento y enfriamiento</span>
+    </button>
+    <div class="plotContent" id="plotContent" hidden>
+      <div class="plotTop" id="plotDrag" title="Arrastra para mover la gráfica"><h2>Curva de calentamiento y enfriamiento</h2><span>Arrastra para moverla</span><button id="plotClose" class="plotClose" type="button" aria-label="Cerrar gráfica" title="Cerrar gráfica">×</button></div>
+      <canvas id="chart" width="950" height="234" aria-label="Gráfica de temperatura frente a energía, con mesetas de fusión y ebullición"></canvas>
+      <div id="plotResize" class="plotResize" role="separator" tabindex="0" aria-label="Cambiar el tamaño de la gráfica arrastrando esta esquina" title="Arrastra esta esquina para cambiar el tamaño"></div>
+    </div>
+  </section>
+</main>
+<aside class="panel" aria-label="Controles de cambios de estado">
+  <div class="panelhead"><h2>Controles</h2><button id="reset" class="reset" title="Volver al sólido inicial" aria-label="Reiniciar">↶</button></div>
+  <div class="substanceRow">
+    <select id="substance" class="substanceSelect" aria-label="Seleccionar sustancia"></select>
+    <button id="tableOpen" class="substanceTableBtn" type="button">▦ Tabla</button>
+  </div>
+  <div id="substanceMeta" class="substanceMeta">Agua · 1 atm (aprox.)</div>
+  <div class="subtitle">Aporta o retira energía y observa qué cambia en las partículas.</div>
+  <div class="reading"><div class="tile"><small>TEMPERATURA SIMULADA</small><strong id="tempDisplay">−30 °C</strong></div><div class="tile"><small>ESTADO / PROCESO</small><div class="subval" id="phaseDisplay">Sólido</div></div></div>
+  <div class="group">
+    <div class="labelRow"><label for="energy">Energía del sistema</label><output class="number" id="energyDisplay">0 %</output></div>
+    <input class="slider" id="energy" type="range" min="0" max="760" step="1" value="0" aria-label="Ajustar energía aportada o retirada">
+    <div class="ticks"><span>Menos energía</span><span>Más energía</span></div>
+  </div>
+  <div class="group">
+    <div class="labelRow">Aplicar energía <span id="modeDisplay" class="number">Detenido</span></div>
+    <div class="actions">
+      <button class="action heat" id="heat" type="button"><span class="heatIcon">♨</span> Calentar</button>
+      <button class="action cool" id="cool" type="button"><span class="heatIcon">❄</span> Enfriar</button>
+      <button class="action full stop" id="pause" type="button">⏸ Detener</button>
+    </div>
+  </div>
+
+<div class="group">
+    <div class="v16LidRow">
+      <button id="lidToggle" type="button" class="lidBtn" aria-pressed="false">◈ Abrir recipiente</button>
+      <button id="evapToggle" type="button" class="evapToggle" aria-pressed="false">◯ Mostrar evaporación</button>
+    </div>
+  </div>
+<div class="phaseList" aria-label="Ir a momentos del proceso">
+    <button data-e="45" title="Sólido">Sólido</button><button data-e="195" title="Durante la fusión">Fusión</button><button data-e="360" title="Líquido">Líquido</button><button data-e="540" title="Durante la ebullición">Ebullición</button><button data-e="698" title="Gas">Gas</button>
+  </div>
+</aside>
+</div>
+<div class="foot">Modelo didáctico cualitativo. Temperaturas aproximadas de cada sustancia a presión atmosférica normal (1 atm); no se calcula la presión del recipiente. La evaporación es una representación cualitativa independiente del calentamiento: el nivel del líquido se mantiene fijo para facilitar la observación. Con la tapa cerrada se representa evaporación y condensación de superficie; la curva corresponde al proceso térmico idealizado. El número y tamaño de las partículas no están a escala.</div>
+</div>
+<section id="tableFloat" class="tableFloat" aria-label="Tabla de temperaturas de cambios de estado" hidden>
+  <div id="tableDrag" class="tableFloatHead"><strong>Temperaturas de fusión y ebullición</strong><button id="tableClose" type="button" title="Cerrar tabla" aria-label="Cerrar tabla">×</button></div>
+  <div class="tableFloatContent"><table><thead><tr><th>Sustancia</th><th>Fusión (°C)</th><th>Ebullición (°C)</th></tr></thead><tbody id="substanceRows"></tbody></table><div class="tableFoot">Temperaturas aproximadas a 1 atm. Los colores son convenciones visuales. La gráfica representa una evolución cualitativa de la energía, no valores reales de calor específico o latente.</div></div>
+  <div id="tableResize" class="tableResize" title="Arrastra para cambiar el tamaño"></div>
+</section>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),stage=$('stage'),ctx=stage.getContext('2d'),chart=$('chart'),g=chart.getContext('2d');
+const W=950,H=520,CW=950,CH=234,TAU=Math.PI*2;
+const box={x:246,y:258,w:280,h:310};
+const rand=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.min(b,Math.max(a,n)),mix=(a,b,t)=>a+(b-a)*t;
+const E1=130,E2=270,E3=470,E4=630,EMAX=760;
+const SUBSTANCES=[
+ {id:'agua',name:'Agua',formula:'H₂O',tm:0,tb:100,color:'#29b6f5'},
+ {id:'alcohol',name:'Alcohol etílico',formula:'C₂H₅OH',tm:-114,tb:78.4,color:'#42d3c1'},
+ {id:'amoniaco',name:'Amoniaco',formula:'NH₃',tm:-77.7,tb:-33.3,color:'#b3bdda'},
+ {id:'oxigeno',name:'Oxígeno',formula:'O₂',tm:-218.8,tb:-183,color:'#78baf0'},
+ {id:'metano',name:'Metano',formula:'CH₄',tm:-182.5,tb:-161.5,color:'#a6b7e5'},
+ {id:'mercurio',name:'Mercurio',formula:'Hg',tm:-38.9,tb:357,color:'#c0c9d0'},
+ {id:'galio',name:'Galio',formula:'Ga',tm:29.8,tb:2229,color:'#bac7d8'},
+ {id:'aluminio',name:'Aluminio',formula:'Al',tm:660,tb:2519,color:'#d1dbe7'},
+ {id:'hierro',name:'Hierro',formula:'Fe',tm:1538,tb:2862,color:'#a3b0be'},
+ {id:'oro',name:'Oro',formula:'Au',tm:1064,tb:2836,color:'#f5c539'},
+ {id:'cobre',name:'Cobre',formula:'Cu',tm:1085,tb:2562,color:'#df8650'}
+];
+let substance=SUBSTANCES[0];
+const fmtTemp=v=>(Math.abs(v-Math.round(v))<.05?String(Math.round(v)):v.toFixed(1).replace('.',',' )).replace('-', '−');
+const rgb=hex=>[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+const tint=(hex,amt)=>{let a=rgb(hex);return `rgb(${a.map(v=>Math.round(v+(255-v)*amt)).join(',')})`};
+const shade=(hex,amt)=>{let a=rgb(hex);return `rgb(${a.map(v=>Math.round(v*(1-amt))).join(',')})`};
+const tempPoints=()=>{const a=substance.tm,b=substance.tb,delta=Math.max(1,b-a);return [a-.30*delta,a,b,b+.40*delta]};
+
+let energy=0,flow=0,lastEnergyDirection=1,time=0,last=0,previousE=0,chartVisible=false,lidOpen=false,evapEnabled=false,evapClock=0;
+let heatPulseUntil=-1,flameLevel=0;
+const flying=[];
+// Partículas gaseosas visibles que siguen desprendiéndose de la superficie durante toda la ebullición.
+const boilingTrails=[];let boilingClock=0;
+const N=500; const p=[]; const LQ=1700; const q=[];
+let gasMaxInitialized=false;
+function makeP(i){let col=i%20,row=Math.floor(i/20),seed=i*2.399963229728653;
+ return {id:i,sx:(col-9.5)*10.2,sy:(row-7)*9.9+87,fi:i/N,liqX:rand(-120,120),liqY:rand(3,140),liqVx:rand(-68,68),liqVy:rand(-49,49),gasX:rand(-125,125),gasY:rand(-147,149),gasVx:rand(-150,150),gasVy:rand(-145,145),freqX:rand(34,59),freqY:rand(38,65),freqX2:rand(61,94),freqY2:rand(67,101),phaseX:seed,phaseY:rand(0,TAU),phaseX2:rand(0,TAU),phaseY2:rand(0,TAU),glow:0};}
+function makeQ(i){let seed=i*1.732+0.37;return {id:i,liqX:rand(-124,124),liqY:rand(0,158),liqVx:rand(-82,82),liqVy:rand(-62,62),phaseX:seed,phaseY:rand(0,TAU)};}
+for(let i=0;i<N;i++)p.push(makeP(i));
+for(let i=0;i<LQ;i++)q.push(makeQ(i));
+// Orden fijo de las posiciones sólidas: la parte derecha se funde antes.
+// Las posiciones interiores se mantienen estables mientras se pierden capas;
+// en solidificación reaparecen siguiendo exactamente el recorrido inverso.
+const solidSlots=[];
+for(let row=0;row<25;row++)for(let col=0;col<20;col++)
+  solidSlots.push({row,col,order:row+9*col/19});
+solidSlots.sort((a,b)=>a.order-b.order || a.col-b.col);
+
+const stateAt=(e,i,total)=>{if(e<E1)return 'solid';if(e<E2)return i/total < 1-(e-E1)/(E2-E1)?'solid':'liquid';if(e<E3)return 'liquid';if(e<E4)return i/total < 1-(e-E3)/(E4-E3)?'liquid':'gas';return 'gas'};
+function info(e){let T,solid,liquid,gas,label,title,desc,mode=flow||lastEnergyDirection;
+ if(e<E1){T=mix(tempPoints()[0],substance.tm,e/E1);solid=1;liquid=gas=0;label='Sólido';title=mode<0?'Enfriamiento del sólido':'Calentamiento del sólido';desc=mode<0?'Al retirar energía, las partículas vibran cada vez menos alrededor de sus posiciones fijas.':'Las partículas vibran en posiciones fijas; al calentarlas aumenta la agitación.'}
+ else if(e<E2){T=substance.tm;solid=1-(e-E1)/(E2-E1);liquid=1-solid;gas=0;let rev=mode<0;label=rev?'Solidificación':'Fusión';title=rev?'Solidificación · líquido → sólido':'Fusión · sólido → líquido';desc=rev?'El líquido se solidifica al retirar energía. Coexisten líquido y sólido y la temperatura permanece constante.':'El sólido se funde al aportar energía. Coexisten sólido y líquido y la temperatura permanece constante.'}
+ else if(e<E3){T=mix(substance.tm,substance.tb,(e-E2)/(E3-E2));solid=gas=0;liquid=1;label='Líquido';title=mode<0?'Enfriamiento del líquido':'Calentamiento del líquido';desc=mode<0?'Al retirar energía, las partículas del líquido se mueven cada vez más despacio.':'Las partículas se deslizan unas entre otras. Al calentarlas aumenta su velocidad.'}
+ else if(e<E4){T=substance.tb;gas=(e-E3)/(E4-E3);liquid=1-gas;solid=0;let rev=mode<0;label=rev?'Condensación':'Ebullición';title=rev?'Condensación · gas → líquido':'Ebullición · líquido → gas';desc=rev?'El gas se condensa al retirar energía. Coexisten gas y líquido y la temperatura permanece constante.':'El líquido hierve al aportar energía. Coexisten líquido y gas y la temperatura permanece constante.'}
+ else {T=mix(substance.tb,tempPoints()[3],(e-E4)/(EMAX-E4));solid=liquid=0;gas=1;label='Gas';title=mode<0?'Enfriamiento del gas':'Calentamiento del gas';desc=mode<0?'Al retirar energía, las partículas gaseosas reducen su velocidad.':'Las partículas están separadas y se mueven en línea recta entre choques con las paredes.'}
+ return{T,solid,liquid,gas,label,title,desc};}
+function speed(){return .52+(energy/EMAX)*1.6}
+function updateParticles(dt){let sp=speed();
+ // Al pasar a gas puro, todas las partículas reciben velocidades
+ // repartidas por los 360 grados; no conservan el impulso vertical
+ // heredado de la ebullición. Solo se inicializan una vez por ciclo.
+ if(energy>=E4 && !gasMaxInitialized){
+   for(const v of p){
+     const a=rand(0,TAU),m=rand(75,160);
+     v.gasVx=Math.cos(a)*m;
+     v.gasVy=Math.sin(a)*m;
+     v.gasBirth=null;
+   }
+   gasMaxInitialized=true;
+ }else if(energy<E4){gasMaxInitialized=false;}
+ for(const v of p){v.glow=Math.max(0,v.glow-dt);
+  // Las posiciones se mantienen para que la identidad de cada partícula sea continua.
+  let a=rand(-1,1)*37*Math.sqrt(dt)*sp;
+  v.liqVx=clamp(v.liqVx+a,-175*sp,175*sp);v.liqVy=clamp(v.liqVy+rand(-1,1)*36*Math.sqrt(dt)*sp,-155*sp,155*sp);
+  v.liqVx=mix(v.liqVx,0,dt*.12);v.liqVy=mix(v.liqVy,0,dt*.12);
+  let m=Math.hypot(v.liqVx,v.liqVy),min=37*sp;if(m<min){let a=rand(0,TAU);v.liqVx+=Math.cos(a)*min*dt*2;v.liqVy+=Math.sin(a)*min*dt*2;}
+  v.liqX+=v.liqVx*dt;v.liqY+=v.liqVy*dt;
+  if(v.liqX<-125){v.liqX=-125;v.liqVx=Math.abs(v.liqVx)}if(v.liqX>125){v.liqX=125;v.liqVx=-Math.abs(v.liqVx)}
+  if(v.liqY<0){v.liqY=0;v.liqVy=Math.abs(v.liqVy)}if(v.liqY>158){v.liqY=158;v.liqVy=-Math.abs(v.liqVy)}
+  v.gasX+=v.gasVx*sp*dt;v.gasY+=v.gasVy*sp*dt;
+  if(v.gasX<-127){v.gasX=-127;v.gasVx=Math.abs(v.gasVx)}if(v.gasX>127){v.gasX=127;v.gasVx=-Math.abs(v.gasVx)}
+  if(v.gasY<-150){v.gasY=-150;v.gasVy=Math.abs(v.gasVy)}if(v.gasY>153){v.gasY=153;v.gasVy=-Math.abs(v.gasVy)}
+ }
+ for(const v of q){
+  let a=rand(-1,1)*43*Math.sqrt(dt)*sp;
+  v.liqVx=clamp(v.liqVx+a,-195*sp,195*sp);v.liqVy=clamp(v.liqVy+rand(-1,1)*41*Math.sqrt(dt)*sp,-172*sp,172*sp);
+  v.liqVx=mix(v.liqVx,0,dt*.08);v.liqVy=mix(v.liqVy,0,dt*.08);
+  let m=Math.hypot(v.liqVx,v.liqVy),min=42*sp;if(m<min){let a=rand(0,TAU);v.liqVx+=Math.cos(a)*min*dt*2.2;v.liqVy+=Math.sin(a)*min*dt*2.2;}
+  v.liqX+=v.liqVx*dt;v.liqY+=v.liqVy*dt;
+  if(v.liqX<-125){v.liqX=-125;v.liqVx=Math.abs(v.liqVx)}if(v.liqX>125){v.liqX=125;v.liqVx=-Math.abs(v.liqVx)}
+  if(v.liqY<0){v.liqY=0;v.liqVy=Math.abs(v.liqVy)}if(v.liqY>158){v.liqY=158;v.liqVy=-Math.abs(v.liqVy)}
+ }
+}
+function updateEvaporation(dt){
+ // La evaporación es una capa de visualización opcional: no altera el volumen
+ // ni elimina partículas del modelo principal de cambios de estado.
+ if(!evapEnabled){flying.length=0;evapClock=0;return;}
+ const inf=info(energy),liquid=inf.liquid;
+ const left=box.x-box.w/2+8,right=box.x+box.w/2-8;
+ const rim=box.y-box.h/2,bottom=box.y+box.h/2-6;
+ const surface=bottom-liquid*94;
+ const radius=4.6;
+ for(let i=flying.length-1;i>=0;i--){
+   const v=flying[i];
+   v.x+=v.vx*dt;v.y+=v.vy*dt;v.age+=dt;
+   // La tapa cerrada impide salir por arriba; abierta permite escapar.
+   if(!lidOpen && v.y<rim+radius){v.y=rim+radius+(rim+radius-v.y);v.vy=Math.abs(v.vy);}
+   // Las paredes laterales son infranqueables dentro del recipiente.
+   if(v.y>=rim+radius){
+     if(v.x<left){v.x=left+(left-v.x);v.vx=Math.abs(v.vx);}
+     if(v.x>right){v.x=right-(v.x-right);v.vx=-Math.abs(v.vx);}
+     v.x=clamp(v.x,left,right);
+   }
+   // No se puede atravesar la superficie del líquido ni el fondo.
+   // En el recipiente cerrado, al regresar a ella la partícula condensa.
+   if(v.y>=surface-radius){flying.splice(i,1);continue;}
+   if(lidOpen && (v.y<rim-30 || Math.abs(v.x-box.x)>420)){
+     flying.splice(i,1);continue;
+   }
+   // Evita que el modelo cerrado acumule demasiadas bolitas si el
+   // movimiento mantiene algunas suspendidas durante mucho tiempo.
+   if(v.age>12){flying.splice(i,1);continue;}
+ }
+ if(dt<=0 || liquid<=.001){return;}
+ // Emisión individual en direcciones aleatorias del semiplano superior.
+ // Ocurre tanto abierto como cerrado y también por debajo de 100 °C.
+ const rate=liquid*(2.3+12*Math.max(0,energy-E2)/(E4-E2));
+ evapClock+=rate*dt;
+ while(evapClock>=1 && flying.length<110){
+   evapClock-=1;
+   const angle=rand(.10,Math.PI-.10),speed=rand(92,165);
+   flying.push({x:rand(left+radius,right-radius),y:surface-radius-1,
+     vx:Math.cos(angle)*speed,vy:-Math.sin(angle)*speed,age:0});
+ }
+}
+
+function updateBoilingTrails(dt){
+ // Partículas VISUALES de vapor: no se descuentan del líquido ni de su nivel.
+ // Siguen emitiéndose mientras exista ebullición, aunque el deslizador esté quieto.
+ const inf=info(energy);
+ const boiling=energy>=E3 && energy<E4 && inf.liquid>.002 && flow>=0;
+ const left=box.x-box.w/2+8,right=box.x+box.w/2-8;
+ const rim=box.y-box.h/2+8,bottom=box.y+box.h/2-6;
+ const surface=bottom-inf.liquid*94;
+ for(let i=boilingTrails.length-1;i>=0;i--){
+   const v=boilingTrails[i];v.age+=dt;
+   if(!v.escaped){
+     // Cambios de rumbo suficientemente espaciados para que la partícula
+     // pueda alcanzar la boca. Predominan las trayectorias diagonales y
+     // laterales, sin el vaivén vertical artificial.
+     v.turn-=dt;
+     if(v.turn<=0){
+       const speed=rand(110,180);
+       const side=Math.random()<.5?-1:1;
+       v.vx=side*rand(.57,.82)*speed;
+       // El gas puede desplazarse también hacia abajo, pero en promedio
+       // asciende desde la superficie hacia la salida.
+       v.vy=Math.random()<.18?rand(15,48):-rand(44,105);
+       v.turn=rand(.42,.86);
+     }
+   }
+   v.x+=v.vx*dt;v.y+=v.vy*dt;
+   if(!v.escaped){
+     // Rebotes en paredes laterales; no pueden atravesarse desde dentro.
+     if(v.x<left){v.x=left+(left-v.x);v.vx=Math.abs(v.vx);}
+     if(v.x>right){v.x=right-(v.x-right);v.vx=-Math.abs(v.vx);}
+     v.x=clamp(v.x,left,right);
+     // La tapa cerrada hace rebotar al gas. Si está abierta,
+     // la partícula cruza la boca y ya no encuentra barreras invisibles.
+     if(v.y<rim){
+       if(lidOpen){v.escaped=true;}
+       else{v.y=rim+(rim-v.y);v.vy=Math.abs(v.vy);}
+     }
+     if(!v.escaped && v.y>surface-4){
+       v.y=surface-4;v.vy=-Math.abs(v.vy);
+     }
+   }
+   // Una vez fuera, continúa rectilíneamente hasta salir de la escena.
+   if(v.age>v.life || !boiling || (v.escaped &&
+       (v.y<rim-230 || v.y>bottom+150 || Math.abs(v.x-box.x)>430))){
+     boilingTrails.splice(i,1);
+   }
+ }
+ if(!boiling){boilingClock=0;return;}
+ const rate=8+inf.liquid*12;
+ boilingClock+=dt*rate;
+ while(boilingClock>=1 && boilingTrails.length<75){
+   boilingClock-=1;
+   const x=rand(left+7,right-7);
+   const side=Math.random()<.5?-1:1;
+   boilingTrails.push({x,y:surface-4,
+     vx:side*rand(90,150),vy:-rand(48,105),
+     turn:rand(.42,.86),age:0,life:rand(5.8,8.4),escaped:false});
+ }
+}
+function sphere(c,x,y,r,alpha=1){const [rr,gg,bb]=rgb(substance.color),light=t=>[rr,gg,bb].map(v=>Math.round(v+(255-v)*t)),dark=t=>[rr,gg,bb].map(v=>Math.round(v*t));let gr=c.createRadialGradient(x-r*.34,y-r*.39,r*.08,x+.14*r,y+.24*r,r*1.1);const rgba=v=>`rgba(${v.join(',')},${alpha})`;gr.addColorStop(0,rgba(light(.84)));gr.addColorStop(.22,rgba(light(.34)));gr.addColorStop(.72,rgba([rr,gg,bb]));gr.addColorStop(1,rgba(dark(.40)));c.fillStyle=gr;c.beginPath();c.arc(x,y,r,0,TAU);c.fill()}
+function background(){let gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#1b2447');gr.addColorStop(1,'#1a2c47');ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);let glow=ctx.createRadialGradient(475,276,5,475,276,405);glow.addColorStop(0,'#3a628044');glow.addColorStop(1,'#3a628000');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H)}
+// Hilera de pequeñas llamas bajo toda la base del recipiente.
+// Indica aporte de energía, no temperatura: durante una meseta sigue ardiendo.
+function drawBurnerFlames(){
+ if(flameLevel<.008)return;
+ ctx.save();
+ const cx=475, floorY=514, count=16, spacing=22.7;
+ ctx.globalAlpha=Math.min(1,flameLevel);
+ const halo=ctx.createRadialGradient(cx,503,10,cx,503,230);
+ halo.addColorStop(0,'rgba(255,135,23,.22)');
+ halo.addColorStop(.65,'rgba(255,90,0,.045)');
+ halo.addColorStop(1,'rgba(255,90,0,0)');
+ ctx.fillStyle=halo;ctx.fillRect(cx-231,453,462,67);
+ for(let i=0;i<count;i++){
+   const x=cx+(i-(count-1)/2)*spacing;
+   // Ritmos y alturas distintos: son llamas pequeñas, no una sola hoguera.
+   const wav=Math.sin(time*(8.3+i*.31)+i*2.23);
+   const wav2=Math.sin(time*(13.1+i*.17)+i*3.79);
+   const height=(19+5*wav+2*wav2)*(.65+.35*flameLevel);
+   const bend=2.5*Math.sin(time*(5.3+i*.21)+i*1.82);
+   const w=7.5+1.1*wav2;
+   const grad=ctx.createLinearGradient(x,floorY,x,floorY-height);
+   grad.addColorStop(0,'#ff4e11');grad.addColorStop(.42,'#ffa11d');grad.addColorStop(.8,'#ffd45f');grad.addColorStop(1,'#fff3ae');
+   ctx.fillStyle=grad;
+   ctx.beginPath();
+   ctx.moveTo(x-w,floorY);
+   ctx.bezierCurveTo(x-w-2,floorY-height*.45,x+bend-2,floorY-height*.72,x+bend,floorY-height);
+   ctx.bezierCurveTo(x+bend+3,floorY-height*.72,x+w+2,floorY-height*.43,x+w,floorY);
+   ctx.closePath();ctx.fill();
+   ctx.fillStyle='rgba(255,236,153,.64)';
+   ctx.beginPath();ctx.moveTo(x-2.7,floorY);ctx.quadraticCurveTo(x-3.2,floorY-height*.40,x+bend*.48,floorY-height*.65);
+   ctx.quadraticCurveTo(x+3,floorY-height*.26,x+3.2,floorY);ctx.closePath();ctx.fill();
+ }
+ ctx.restore();
+}
+function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function beakerBack(){let x=box.x-box.w/2,y=box.y-box.h/2;ctx.fillStyle='#8abdd61c';rounded(ctx,x-12,y-9,box.w+24,box.h+20,17);ctx.fill();ctx.fillStyle='#0a18363f';ctx.fillRect(x,y,box.w,box.h)}
+function beakerFront(){let x=box.x-box.w/2,y=box.y-box.h/2,w=box.w,h=box.h;ctx.strokeStyle='#aad3e0af';ctx.lineWidth=5.8;ctx.beginPath();ctx.moveTo(x-9,y+1);ctx.lineTo(x-9,y+h-13);ctx.quadraticCurveTo(x-9,y+h+12,x+18,y+h+12);ctx.lineTo(x+w-18,y+h+12);ctx.quadraticCurveTo(x+w+10,y+h+12,x+w+10,y+h-13);ctx.lineTo(x+w+10,y+1);ctx.stroke();
+ // Tapa de cobre. Si está abierta, gira sobre el borde derecho y deja libre toda la boca.
+ ctx.save();
+ if(lidOpen){ctx.translate(x+w+15,y-4);ctx.rotate(Math.PI*.40);ctx.translate(-(x+w+15),-(y-4));}
+ let metal=ctx.createLinearGradient(0,y-24,0,y-5);metal.addColorStop(0,'#f7c98b');metal.addColorStop(.5,'#c17c42');metal.addColorStop(1,'#6f3b22');ctx.fillStyle=metal;rounded(ctx,x-16,y-13,w+32,19,6);ctx.fill();ctx.fillStyle='#efbe83';rounded(ctx,box.x-38,y-30,76,17,6);ctx.fill();ctx.fillStyle='#152743';rounded(ctx,box.x-24,y-27,48,9,5);ctx.fill();ctx.restore()}
+function drawScene(){const inf=info(energy);background();drawBurnerFlames();
+ // El recipiente es el protagonista de la visualización.
+ ctx.save();ctx.translate(475,257);ctx.scale(1.39,1.39);ctx.translate(-box.x,-box.y);
+ beakerBack();let x=box.x-box.w/2+2,y=box.y-box.h/2,bottom=box.y+box.h/2-6;
+ const lh=inf.liquid*94, surf=bottom-lh;
+ // Clasificamos primero para que el tamaño del sólido coincida con sus partículas.
+ let solidCount=0,liquidCount=0,gasCount=0;
+ for(let i=0;i<N;i++){const phase=stateAt(energy,i,N);if(phase==='solid')solidCount++;else if(phase==='liquid')liquidCount++;else gasCount++;}
+ // Al fundirse, un lateral pierde más capas que el otro.
+ // Las partículas conservadas siguen en una red compacta apoyada en el fondo.
+ const solidFoot=bottom-8;
+ const solidCols=new Array(20).fill(0);
+ for(let j=0;j<solidCount;j++)solidCols[solidSlots[j].col]++;
+ const melt=1-solidCount/N;
+ // Un desplazamiento horizontal en las capas superiores acentúa el escoramiento,
+ // sin desplazar la base ni permitir que el sólido atraviese el vidrio.
+ const lean=26*Math.sin(Math.PI*melt);
+ function solidContour(){
+   ctx.beginPath();
+   const left=box.x-100,right=box.x+100;
+   ctx.moveTo(left,solidFoot+3);
+   ctx.lineTo(right,solidFoot+3);
+   for(let col=19;col>=0;col--){
+     const h=solidCols[col]*6;
+     const skew=lean*(h/150);
+     const xx=box.x+(col-9.5)*10+skew;
+     const yy=solidFoot-h-2;
+     if(col===19)ctx.lineTo(xx+5,yy);
+     ctx.lineTo(xx-5,yy);
+   }
+   ctx.closePath();
+ }
+ if(lh>1){ctx.save();let gr=ctx.createLinearGradient(0,surf,0,bottom);gr.addColorStop(0,substance.color+'8a');gr.addColorStop(.48,substance.color+'bf');gr.addColorStop(1,shade(substance.color,.42));ctx.fillStyle=gr;ctx.fillRect(x,surf,box.w-4,lh);ctx.strokeStyle=tint(substance.color,.65);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,surf);ctx.lineTo(x+box.w-4,surf);ctx.stroke();ctx.restore();}
+ if(solidCount>0){ctx.save();ctx.fillStyle=tint(substance.color,.73);solidContour();ctx.fill();ctx.strokeStyle='#effbffb0';ctx.lineWidth=2;ctx.stroke();ctx.restore();}
+ // Cada índice representa la misma partícula en todas las fases.
+ let sidx=0;
+ ctx.save();ctx.beginPath();ctx.rect(x,y+1,box.w-3,box.h-1);ctx.clip();
+ for(let i=0;i<N;i++){
+  let v=p[i],phase=stateAt(energy,i,N),px,py;
+  // En ebullición el gas nace visualmente en el líquido, no en el aire.
+  if(phase==='gas' && v.previousPhase!==undefined && v.previousPhase!=='gas' && lh>1){
+    // El gas real también nace con una componente lateral dominante.
+    const side=Math.random()<.5?-1:1;
+    v.gasBirth={start:time,x:box.x+v.liqX,y:surf+8+rand(0,Math.min(18,Math.max(0,lh-16))),vx:side*rand(77,123),vy:-rand(22,65),duration:rand(.52,.82)};
+  } else if(phase!=='gas'){
+    v.gasBirth=null;
+  }
+  v.previousPhase=phase;
+  if(phase==='solid'){
+    const slot=solidSlots[sidx],col=slot.col,row=slot.row;
+    px=box.x+(col-9.5)*10.0+lean*((row+1)/25);
+    py=solidFoot-3-row*6.0;
+    // Vibración rápida, corta e individual alrededor de cada nodo de la red.
+    // Cada eje combina dos frecuencias y fases propias: no hay vaivén colectivo.
+    const amp=.72+Math.min(1,energy/E1)*.58;
+    px+=amp*(.68*Math.sin(time*v.freqX+v.phaseX)+.32*Math.sin(time*v.freqX2+v.phaseX2));
+    py+=amp*(.68*Math.cos(time*v.freqY+v.phaseY)+.32*Math.cos(time*v.freqY2+v.phaseY2));
+    sidx++;
+    sphere(ctx,px,py,5.2,.94);
+  }else if(phase==='liquid'){
+    px=box.x+v.liqX;py=surf+8+(v.liqY/158)*Math.max(6,lh-16);
+    sphere(ctx,px,py,5.1,.94);
+  } else {
+    if(v.gasBirth){
+      const b=v.gasBirth,age=time-b.start;
+      // Refleja el movimiento lateral contra los lados, sin congelar
+      // la coordenada X cuando alcanza una pared durante la transición.
+      const wallMin=box.x-126,span=252;
+      const raw=b.x+b.vx*age-wallMin;
+      const folded=((raw%(2*span))+(2*span))%(2*span);
+      px=wallMin+(folded>span?2*span-folded:folded);
+      py=Math.min(surf-4,b.y+b.vy*age);
+      if(age>=b.duration){
+        // Al terminar la transición continúa su recorrido normal desde
+        // exactamente la posición alcanzada, sin saltos de posición.
+        let available=Math.max(20,surf-y-20);
+        v.gasX=px-box.x;
+        v.gasY=clamp(((py-y-8)/available)*303-150,-149,152);
+        // Al salir del líquido, el gas pasa a movimiento libre isotrópico.
+        const angle=rand(0,TAU),vel=rand(85,155);
+        v.gasVx=Math.cos(angle)*vel;
+        v.gasVy=Math.sin(angle)*vel;
+        v.gasBirth=null;
+      }
+    } else {
+      px=box.x+v.gasX;let available=Math.max(20,surf-y-20);py=y+8+((v.gasY+150)/303)*available;
+    }
+    sphere(ctx,px,py,3.6,.83);
+  }
+ }
+ if(lh>1){
+   const extraCount=Math.round(LQ*inf.liquid);
+   for(let i=0;i<extraCount;i++){
+     const v=q[i];
+     const px=box.x+v.liqX, py=surf+8+(v.liqY/158)*Math.max(6,lh-16);
+     sphere(ctx,px,py,4.9,.92);
+   }
+ }
+ // Durante la fusión/solidificación, señalamos el sólido sumergido.
+ // El contorno acompaña la altura real del bloque en cada fotograma,
+ // y se dibuja encima de las partículas líquidas para no perderse.
+ if(solidCount>0 && liquidCount>0){
+   ctx.save();
+   // El sombreado y el contorno siguen el lateral erosionado del bloque.
+   ctx.fillStyle='rgba(255,222,135,0.105)';
+   solidContour();ctx.fill();
+   ctx.setLineDash([7,5]);ctx.lineDashOffset=0;
+   ctx.strokeStyle='#ffe29a';ctx.lineWidth=2.6;
+   ctx.shadowColor='rgba(36,17,4,0.9)';ctx.shadowBlur=4;
+   solidContour();ctx.stroke();
+   ctx.restore();
+ }
+ ctx.restore();
+ // La emisión gaseosa continúa desde el nivel actual del líquido, aun cuando
+ // la energía no varíe durante la meseta de ebullición.
+ for(const v of boilingTrails){
+   const alpha=Math.min(1,(v.life-v.age)/.46);
+   sphere(ctx,v.x,v.y,3.6,Math.max(0,alpha)*.84);
+ }
+ // Partículas que se evaporan: salen de la superficie, recorren el espacio del recipiente
+ // y escapan por la abertura. Se dibujan como bolitas sueltas, sin chorros.
+ for(const v of flying){sphere(ctx,v.x,v.y,4.6,.99);}
+ beakerFront();ctx.restore();
+}
+function drawChart(){
+ const [startT,tm,tb,endT]=tempPoints();
+ const range=endT-startT,buffer=Math.max(range*.06,1.5);
+ const ymin=startT-buffer,ymax=endT+buffer;
+ const plot={left:110,right:927,top:25,bottom:194};
+ const xx=e=>mix(plot.left,plot.right,e/EMAX),yy=t=>mix(plot.bottom,plot.top,(t-ymin)/(ymax-ymin));
+ const pts=[[0,startT],[E1,tm],[E2,tm],[E3,tb],[E4,tb],[EMAX,endT]];
+ g.clearRect(0,0,CW,CH);g.save();
+ // Guías de referencia y etiquetas exclusivas de cada cambio de estado.
+ for(const [t,label,color] of [[tm,'Fusión','#82d7fb'],[tb,'Ebullición','#ffcb80']]){
+   const y=yy(t);g.beginPath();g.moveTo(plot.left,y);g.lineTo(plot.right,y);
+   g.strokeStyle=color;g.globalAlpha=.63;g.setLineDash([5,5]);g.lineWidth=1.6;g.stroke();g.setLineDash([]);g.globalAlpha=1;
+   g.fillStyle=color;g.textAlign='right';g.font='bold 16px Segoe UI, Arial';
+   g.fillText(fmtTemp(t)+' °C',plot.left-8,y+5);
+ }
+ // Dos marcas adicionales de escala (sin coincidir con las temperaturas de cambio).
+ g.font='12px Segoe UI, Arial';g.fillStyle='#b9cce0';
+ for(const t of [startT,endT]){const y=yy(t);g.fillText(fmtTemp(t)+' °C',plot.left-8,y+4);}
+ g.strokeStyle='#91afc7';g.lineWidth=1.5;g.beginPath();g.moveTo(plot.left,plot.top-2);g.lineTo(plot.left,plot.bottom+1);g.lineTo(plot.right+2,plot.bottom+1);g.stroke();
+ g.fillStyle='#e6f3ff';g.font='bold 14px Segoe UI, Arial';g.textAlign='left';g.fillText('Temperatura',9,18);
+ g.textAlign='right';g.font='13px Segoe UI, Arial';g.fillText('Energía del sistema (escala relativa)',plot.right,226);
+ for(const [a,b,label] of [[E1,E2,'Fusión / solidificación'],[E3,E4,'Ebullición / condensación']]){
+  g.fillStyle='#5ba8d510';g.fillRect(xx(a),plot.top,xx(b)-xx(a),plot.bottom-plot.top);
+  g.fillStyle='#d1e0ed';g.textAlign='center';g.font='12px Segoe UI, Arial';g.fillText(label,(xx(a)+xx(b))/2,40);
+ }
+ const drawPolyline=(until,style,width,dashed=false)=>{
+  g.save();g.strokeStyle=style;g.lineWidth=width;g.lineJoin='round';g.lineCap='round';if(dashed)g.setLineDash([5,6]);
+  g.beginPath();g.moveTo(xx(0),yy(startT));for(let i=1;i<pts.length;i++){const [e,t]=pts[i],[ep,tp]=pts[i-1];if(until<ep)break;if(until<e){g.lineTo(xx(until),yy(mix(tp,t,(until-ep)/(e-ep))));break;}g.lineTo(xx(e),yy(t));}g.stroke();g.restore();
+ };
+ drawPolyline(EMAX,'#607b96',2.1,true);drawPolyline(energy,'#f7ad61',4);
+ const pt=info(energy);g.beginPath();g.arc(xx(energy),yy(pt.T),7.5,0,TAU);g.fillStyle='#ffe2a9';g.fill();g.lineWidth=3;g.strokeStyle='#c66a2d';g.stroke();
+ g.restore();
+}
+function sync(){const inf=info(energy);$('tempDisplay').textContent=(inf.T<0?'−'+Math.abs(Math.round(inf.T)):Math.round(inf.T))+' °C';$('phaseDisplay').textContent=inf.label;
+ $('energy').value=Math.round(energy);$('energyDisplay').textContent=Math.round(energy/EMAX*100)+' %';$('modeDisplay').textContent=flow>0?'Calentando':flow<0?'Enfriando':'Detenido';
+ for(let key of ['solid','liquid','gas']){$(key+'Pct').textContent=Math.round(inf[key]*100)+' %';$(key+'Bar').style.height=(inf[key]*100)+'%';}
+ $('stageStatus').innerHTML='<strong>'+inf.title+'</strong> · '+inf.desc;
+ $('lidToggle').textContent=lidOpen?'◈ Cerrar recipiente':'◈ Abrir recipiente';
+ $('lidToggle').classList.toggle('isOpen',lidOpen);$('lidToggle').setAttribute('aria-pressed',String(lidOpen));
+ $('evapToggle').textContent=evapEnabled?'● Ocultar evaporación':'◯ Mostrar evaporación';
+ $('evapToggle').classList.toggle('isActive',evapEnabled);$('evapToggle').setAttribute('aria-pressed',String(evapEnabled));
+ $('heat').classList.toggle('active',flow===1);$('cool').classList.toggle('active',flow===-1);$('heat').setAttribute('aria-pressed',flow===1);$('cool').setAttribute('aria-pressed',flow===-1);
+}
+function setFlow(v){flow=flow===v?0:v;if(flow!==0)lastEnergyDirection=flow;sync()}
+$('heat').addEventListener('click',()=>setFlow(1));$('cool').addEventListener('click',()=>setFlow(-1));$('pause').addEventListener('click',()=>{flow=0;sync()});
+$('reset').addEventListener('click',()=>{energy=0;flow=0;lastEnergyDirection=1;time=0;heatPulseUntil=-1;flameLevel=0;gasMaxInitialized=false;lidOpen=false;evapEnabled=false;evapClock=0;flying.length=0;boilingTrails.length=0;boilingClock=0;for(const v of p){v.gasBirth=null;v.previousPhase=undefined;}sync()});
+$('lidToggle').addEventListener('click',()=>{lidOpen=!lidOpen;evapClock=0;sync()});
+$('evapToggle').addEventListener('click',()=>{evapEnabled=!evapEnabled;evapClock=0;flying.length=0;sync()});
+$('energy').addEventListener('input',e=>{let val=Number(e.target.value);if(val>energy){heatPulseUntil=time+1.4;lastEnergyDirection=1;}else if(val<energy){heatPulseUntil=-1;lastEnergyDirection=-1;}flow=0;previousE=energy;energy=val;sync()});
+function setPlotVisible(on){
+ chartVisible=on;
+ $('plotContent').hidden=!on;
+ $('plotToggle').setAttribute('aria-expanded',String(on));
+ $('plotArrow').textContent=on?'▾':'▸';
+ $('plotToggleText').textContent=(on?'Ocultar':'Mostrar')+' curva de calentamiento y enfriamiento';
+ if(on){
+   const el=$('plotContent');
+   if(!el.dataset.positioned){
+     el.style.left=clamp(innerWidth*.27,10,Math.max(10,innerWidth-690))+'px';
+     el.style.top=clamp(innerHeight*.22,10,Math.max(10,innerHeight-365))+'px';
+     el.style.right='auto';el.style.bottom='auto';
+     el.dataset.positioned='1';
+   }
+   resize();drawChart();
+ }
+}
+$('plotClose').addEventListener('click',()=>setPlotVisible(false));
+let chartDrag=null;
+$('plotDrag').addEventListener('pointerdown',e=>{
+ if(e.target.closest('button'))return;
+ const el=$('plotContent'),r=el.getBoundingClientRect();
+ el.style.left=r.left+'px';el.style.top=r.top+'px';el.style.right='auto';el.style.bottom='auto';
+ chartDrag={id:e.pointerId,x:e.clientX,y:e.clientY,left:r.left,top:r.top};
+ $('plotDrag').setPointerCapture(e.pointerId);
+});
+$('plotDrag').addEventListener('pointermove',e=>{
+ if(!chartDrag||chartDrag.id!==e.pointerId)return;
+ const el=$('plotContent'),r=el.getBoundingClientRect();
+ el.style.left=clamp(chartDrag.left+e.clientX-chartDrag.x,0,Math.max(0,innerWidth-r.width))+'px';
+ el.style.top=clamp(chartDrag.top+e.clientY-chartDrag.y,0,Math.max(0,innerHeight-r.height))+'px';
+});
+$('plotDrag').addEventListener('pointerup',()=>{chartDrag=null});
+$('plotDrag').addEventListener('pointercancel',()=>{chartDrag=null});
+// La esquina inferior derecha cambia ancho y alto, como una ventana normal.
+let resizingChart=null;
+$('plotResize').addEventListener('pointerdown',e=>{
+  if(e.button!==0)return;
+  e.preventDefault();e.stopPropagation();
+  const el=$('plotContent'),r=el.getBoundingClientRect();
+  // Fijar coordenadas antes de redimensionar para evitar saltos de anclaje.
+  el.style.left=r.left+'px';el.style.top=r.top+'px';el.style.right='auto';el.style.bottom='auto';
+  el.style.setProperty('width',r.width+'px','important');el.style.setProperty('height',r.height+'px','important');
+  resizingChart={id:e.pointerId,x:e.clientX,y:e.clientY,w:r.width,h:r.height,left:r.left,top:r.top};
+  $('plotResize').setPointerCapture(e.pointerId);
+});
+$('plotResize').addEventListener('pointermove',e=>{
+ if(!resizingChart||resizingChart.id!==e.pointerId)return;
+ const r=resizingChart,el=$('plotContent');
+ el.style.setProperty('width',clamp(r.w+e.clientX-r.x,Math.min(370,innerWidth-24),Math.max(Math.min(370,innerWidth-24),innerWidth-r.left-8))+'px','important');
+ el.style.setProperty('height',clamp(r.h+e.clientY-r.y,205,Math.max(205,innerHeight-r.top-8))+'px','important');
+ resize();drawChart();
+});
+for(const event of ['pointerup','pointercancel'])$('plotResize').addEventListener(event,()=>{resizingChart=null});
+$('plotResize').addEventListener('keydown',e=>{
+ const v={ArrowRight:[32,0],ArrowLeft:[-32,0],ArrowDown:[0,24],ArrowUp:[0,-24]}[e.key];
+ if(!v)return;e.preventDefault();const el=$('plotContent'),r=el.getBoundingClientRect();
+ el.style.left=r.left+'px';el.style.top=r.top+'px';el.style.right='auto';el.style.bottom='auto';
+ el.style.setProperty('width',clamp(r.width+v[0],Math.min(370,innerWidth-24),Math.max(Math.min(370,innerWidth-24),innerWidth-r.left-8))+'px','important');
+ el.style.setProperty('height',clamp(r.height+v[1],205,Math.max(205,innerHeight-r.top-8))+'px','important');resize();drawChart();
+});
+new ResizeObserver(()=>{if(chartVisible){resize();drawChart();}}).observe($('plotContent'));
+$('plotToggle').addEventListener('click',()=>setPlotVisible(!chartVisible));
+function drawFrame(ts){if(!last)last=ts;let dt=clamp((ts-last)/1000,0,.045);last=ts;time+=dt;
+ if(flow!==0){lastEnergyDirection=flow;let next=clamp(energy+flow*29*dt,0,EMAX);energy=next;if((energy===0&&flow<0)||(energy===EMAX&&flow>0))flow=0;sync()}
+ const heatNow=(flow===1 || time<heatPulseUntil)?1:0;
+ flameLevel+=(heatNow-flameLevel)*Math.min(1,dt*(heatNow?9:5));
+ updateParticles(dt);updateEvaporation(dt);updateBoilingTrails(dt);if(evapEnabled)sync();drawScene();if(chartVisible)drawChart();requestAnimationFrame(drawFrame)}
+$('fullscreen').addEventListener('click',()=>{if(document.fullscreenElement){document.exitFullscreen?.()}else{document.documentElement.requestFullscreen?.()}});
+document.addEventListener('fullscreenchange',()=>{$('fullscreen').textContent=document.fullscreenElement?'⛶ Salir de pantalla completa':'⛶ Pantalla completa'});
+document.querySelectorAll('[data-e]').forEach(b=>b.addEventListener('click',()=>{energy=Number(b.dataset.e);flow=0;sync()}));
+function resize(){let scale=Math.min(2,Math.max(1,stage.clientWidth/W)*(window.devicePixelRatio||1));stage.width=Math.round(W*scale);stage.height=Math.round(H*scale);ctx.setTransform(scale,0,0,scale,0,0);const dpr=Math.min(2,window.devicePixelRatio||1);const cw=Math.max(1,chart.clientWidth),ch=Math.max(1,chart.clientHeight);chart.width=Math.round(cw*dpr);chart.height=Math.round(ch*dpr);g.setTransform(chart.width/CW,0,0,chart.height/CH,0,0)}window.addEventListener('resize',resize);
+
+// Sustancias: cambiar reinicia la representación, actualiza los valores y conserva el diseño.
+const choose=$('substance'),table=$('tableFloat');
+for(const v of SUBSTANCES){const op=document.createElement('option');op.value=v.id;op.textContent=v.name;choose.append(op);}
+function populateTable(){const body=$('substanceRows');body.replaceChildren();for(const v of SUBSTANCES){
+ const tr=document.createElement('tr');if(v.id===substance.id)tr.className='selected';
+ const name=document.createElement('td');const swatch=document.createElement('span');swatch.className='tableSwatch';swatch.style.background=v.color;name.append(swatch,document.createTextNode(v.name));
+ const tm=document.createElement('td'),tb=document.createElement('td');tm.textContent=fmtTemp(v.tm);tb.textContent=fmtTemp(v.tb);
+ tr.append(name,tm,tb);tr.style.cursor='pointer';tr.title='Seleccionar '+v.name;
+ tr.addEventListener('click',()=>{choose.value=v.id;choose.dispatchEvent(new Event('change'));});body.append(tr);
+ }}
+function setSubstance(id){substance=SUBSTANCES.find(v=>v.id===id)||SUBSTANCES[0];
+ energy=0;flow=0;lastEnergyDirection=1;time=0;gasMaxInitialized=false;evapClock=0;boilingClock=0;flying.length=0;boilingTrails.length=0;
+ for(const v of p){v.gasBirth=null;v.previousPhase=undefined;}
+ $('substanceMeta').textContent=`${substance.formula} · Fusión: ${fmtTemp(substance.tm)} °C · Ebullición: ${fmtTemp(substance.tb)} °C`;
+ populateTable();sync();drawChart();}
+choose.addEventListener('change',()=>setSubstance(choose.value));
+$('tableOpen').addEventListener('click',()=>{table.hidden=false;populateTable();});
+$('tableClose').addEventListener('click',()=>{table.hidden=true;});
+let tableDrag=null;
+$('tableDrag').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const r=table.getBoundingClientRect();table.style.left=r.left+'px';table.style.top=r.top+'px';tableDrag={id:e.pointerId,x:e.clientX,y:e.clientY,left:r.left,top:r.top};e.currentTarget.setPointerCapture(e.pointerId);});
+$('tableDrag').addEventListener('pointermove',e=>{if(!tableDrag||tableDrag.id!==e.pointerId)return;const r=table.getBoundingClientRect();table.style.left=clamp(tableDrag.left+e.clientX-tableDrag.x,0,innerWidth-r.width)+'px';table.style.top=clamp(tableDrag.top+e.clientY-tableDrag.y,0,innerHeight-r.height)+'px';});
+for(const ev of ['pointerup','pointercancel'])$('tableDrag').addEventListener(ev,()=>tableDrag=null);
+let tableSize=null;
+$('tableResize').addEventListener('pointerdown',e=>{e.preventDefault();const r=table.getBoundingClientRect();tableSize={id:e.pointerId,x:e.clientX,y:e.clientY,w:r.width,h:r.height,left:r.left,top:r.top};e.currentTarget.setPointerCapture(e.pointerId);});
+$('tableResize').addEventListener('pointermove',e=>{if(!tableSize||tableSize.id!==e.pointerId)return;const r=tableSize;table.style.width=clamp(r.w+e.clientX-r.x,Math.min(410,innerWidth-20),Math.max(410,innerWidth-r.left-6))+'px';table.style.height=clamp(r.h+e.clientY-r.y,220,Math.max(220,innerHeight-r.top-6))+'px';});
+for(const ev of ['pointerup','pointercancel'])$('tableResize').addEventListener(ev,()=>tableSize=null);
+choose.value=substance.id;setSubstance(substance.id);
+
+// Estado inicial del recipiente y la gráfica.
+resize();sync();requestAnimationFrame(drawFrame);
+})();
+</script>
+</body>
+</html>
